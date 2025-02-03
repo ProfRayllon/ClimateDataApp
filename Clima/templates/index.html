@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatística Climática</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Estatística Climática</h1>
+        <form method="POST">
+            <input type="text" name="cities" placeholder="Digite os nomes das cidades, separados por vírgula">
+            <button type="submit">Obter Clima</button>
+        </form>
+        {% if weather_data %}
+            <div class="weather-info">
+                {% for city, weather in weather_data.items() %}
+                    <div class="weather-card">
+                        <h3>{{ city }}</h3>
+                        <p>Temperatura: {{ weather.temperature }}°C</p>
+                        <p>Pressão: {{ weather.pressure }} hPa</p>
+                        <p>Umidade: {{ weather.humidity }}%</p>
+                        <p>Velocidade do vento: {{ weather.wind_speed }} m/s</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="graph-section">
+                <h2>Gráfico de Regressão Linear</h2>
+                <img src="{{ url_for('plot_png', cities=request.form['cities']) }}" alt="Gráfico de Regressão Linear">
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
